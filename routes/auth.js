@@ -5,8 +5,12 @@ import jwt from "jsonwebtoken";
 
 const router = express.Router();
 
-// REGISTER
-// REGISTER
+// ✅ TEST ROUTE
+router.get("/test", (req, res) => {
+  res.send("Auth route working ✅");
+});
+
+// ✅ REGISTER
 router.post("/register", async (req, res) => {
   try {
     const { name, email, password } = req.body;
@@ -41,16 +45,15 @@ router.post("/login", async (req, res) => {
       expiresIn: "1d",
     });
 
-   res.status(200).json({
-  token,
-  user: {
-    id: existingUser._id,     // ✅ existing code — don’t remove
-    _id: existingUser._id,    // ✅ new addition
-    name: existingUser.name,
-    email: existingUser.email,
-  },
-});
-
+    res.status(200).json({
+      token,
+      user: {
+        id: existingUser._id,
+        _id: existingUser._id,
+        name: existingUser.name,
+        email: existingUser.email,
+      },
+    });
   } catch (err) {
     res.status(500).json({ msg: "Server error" });
   }
