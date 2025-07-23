@@ -27,7 +27,7 @@ app.use("/api/auth", authRoutes);  // eg. /api/auth/login
 app.use("/api/food", foodRoutes);  // Food-related routes
 
 // ✅ Add this test route
-router.get("/test", (req, res) => {
+app.get("/api/auth/test", (req, res) => {
   res.send("Auth route working ✅");
 });
 
