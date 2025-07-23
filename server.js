@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import connectDB from "./db.js";
+const router = express.Router();
 
 import authRoutes from "./routes/auth.js";
 import foodRoutes from "./routes/food.js";
@@ -24,6 +25,11 @@ app.use("/api/auth", authRoutes);  // eg. /api/auth/login
 
 
 app.use("/api/food", foodRoutes);  // Food-related routes
+
+// ✅ Add this test route
+router.get("/test", (req, res) => {
+  res.send("Auth route working ✅");
+});
 
 app.get("/", (req, res) => {
   res.send("API is running...");
