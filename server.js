@@ -2,6 +2,8 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import connectDB from "./db.js";
+import fs from "fs";
+import path from "path";
 const router = express.Router();
 
 import authRoutes from "./routes/auth.js";
@@ -10,11 +12,24 @@ import foodRoutes from "./routes/food.js";
 dotenv.config();
 const app = express();
 
+const uploadDir = path.join(process.cwd(), "uploads");
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir);
+  console.log("✅ Created uploads folder at:", uploadDir);
+}
 // Static uploads
 app.use("/uploads", express.static("uploads"));
 
 // Middleware
-app.use(cors());
+
+
+app.use(
+  cors({
+    origin: "https://dharani2812.github.io", // your GitHub Pages frontend
+    credentials: true, // only if using cookies or auth headers
+  })
+);
+
 app.use(express.json());
 
 // Connect DB
