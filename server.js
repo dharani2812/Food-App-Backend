@@ -25,7 +25,10 @@ app.use("/uploads", express.static("uploads"));
 
 app.use(
   cors({
-    origin: "https://dharani2812.github.io", // your GitHub Pages frontend
+    origin: [
+      "http://localhost:5173",             // ✅ allow local dev
+      "https://dharani2812.github.io"      // ✅ allow GitHub Pages
+    ], // your GitHub Pages frontend
     credentials: true, // only if using cookies or auth headers
   })
 );

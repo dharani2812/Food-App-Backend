@@ -89,15 +89,21 @@ router.put("/request/:id", async (req, res) => {
       return res.status(404).json({ message: "Food not found" });
     }
 
-    if (food.status.toLowerCase() !== "available") {
-      console.error(
-        "❌ Food already requested or picked up. Status:",
-        food.status
-      );
-      return res
-        .status(400)
-        .json({ message: "Food already requested or picked up" });
-    }
+   const isSameUser =
+  food.requesterId && food.requesterId.toString() === requesterId;
+
+if (
+  food.status.toLowerCase() !== "available" &&
+  !isSameUser
+) {
+  console.error(
+    "❌ Food already requested by another user. Status:",
+    food.status
+  );
+  return res.status(400).json({
+    message: "Food already requested by another user",
+  });
+}
 
     // ✅ Update food item
     food.status = "Requested";
