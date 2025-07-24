@@ -17,8 +17,8 @@ export const processAndSaveImage = async (req, res, next) => {
 
   try {
     await sharp(req.file.buffer)
-      .resize({ width: 800 }) // resize to 800px width (preserve aspect ratio)
-      .jpeg({ quality: 500 }) // compress to 70% quality
+      .resize({ width: 800 })
+      .jpeg({ quality: 70 }) // ✅ Corrected quality value
       .toFile(filePath);
 
     req.file.filename = filename;

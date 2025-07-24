@@ -12,6 +12,8 @@ const router = express.Router();
 // ✅ POST a new food donation
 router.post("/", auth, upload.single("image"),processAndSaveImage, async (req, res) => {
   try {
+     console.log("🔔 Incoming Food Donation:", req.body);
+    console.log("📷 Uploaded file:", req.file?.originalname);
     const donorId = req.user.id;
     const { foodName, quantity, expiry, description } = req.body;
     const address = JSON.parse(req.body.address);
