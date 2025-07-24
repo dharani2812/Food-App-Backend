@@ -1,6 +1,6 @@
 import express from "express";
 import Food from "../models/Food.js";
-import upload from "../middleware/upload.js";
+import upload, { processAndSaveImage } from "../middleware/multer.js";
 import User from "../models/User.js";
 import auth from "../middleware/auth.js";
 import { sendEmail } from "../utils/mailer.js";
@@ -10,7 +10,7 @@ import cron from "node-cron";
 const router = express.Router();
 
 // ✅ POST a new food donation
-router.post("/", auth, upload.single("image"), async (req, res) => {
+router.post("/", auth, upload.single("image"),processAndSaveImage, async (req, res) => {
   try {
     const donorId = req.user.id;
     const { foodName, quantity, expiry, description } = req.body;
@@ -256,7 +256,7 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
-router.put("/:id", auth, upload.single("image"), async (req, res) => {
+router.put("/:id", auth, upload.single("image"),processAndSaveImage, async (req, res) => {
   try {
     const foodId = req.params.id;
     const updates = {
