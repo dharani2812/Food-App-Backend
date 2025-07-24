@@ -12,8 +12,6 @@ const router = express.Router();
 // ✅ POST a new food donation
 router.post("/", auth, upload.single("image"),processAndSaveImage, async (req, res) => {
   try {
-     console.log("🔔 Incoming Food Donation:", req.body);
-    console.log("📷 Uploaded file:", req.file?.originalname);
     const donorId = req.user.id;
     const { foodName, quantity, expiry, description } = req.body;
     const address = JSON.parse(req.body.address);
@@ -89,21 +87,15 @@ router.put("/request/:id", async (req, res) => {
       return res.status(404).json({ message: "Food not found" });
     }
 
-   const isSameUser =
-  food.requesterId && food.requesterId.toString() === requesterId;
-
-if (
-  food.status.toLowerCase() !== "available" &&
-  !isSameUser
-) {
-  console.error(
-    "❌ Food already requested by another user. Status:",
-    food.status
-  );
-  return res.status(400).json({
-    message: "Food already requested by another user",
-  });
-}
+    if (food.status.toLowerCase() !== "available") {
+      console.error(
+        "❌ Food already requested or picked up. Status:",
+        food.status
+      );
+      return res
+        .status(400)
+        .json({ message: "Food already requested or picked up" });
+    }
 
     // ✅ Update food item
     food.status = "Requested";
